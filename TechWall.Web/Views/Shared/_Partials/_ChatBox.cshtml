@@ -1,0 +1,82 @@
+﻿@model TechWall.ViewModels.ChatBoxModel
+@using Microsoft.AspNet.Identity
+
+<div class="ChatBox" id="DVChatBox-@Model.ToUser.UserId">
+    @Html.HiddenFor(m => m.ToUser.UserId, new { @id = "ToUserId" })
+    @Html.HiddenFor(m => User.Identity.Name, new { @id = "FromUser" })
+
+    <div class="chat-discussion-small" id="chat-discussion-small">
+
+        @foreach (var message in Model.Messages)
+        {
+            <div class="@message.Class">
+                <div class="author-name">
+                    @if (message.Class == "left")
+                    {
+                        <text>Support Agent</text>
+                    }
+                    else
+                    {
+                        @User.Identity.Name
+                    }
+                    <small class="chat-date">
+                        @message.Date.Value.ToString("hh:mm:ss tt")
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    @message.Message
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<script>
+
+    function formatDate() {
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+
+        return strTime;
+    }
+
+    function sendMessage(element, e) {
+        let message = $(element).val().trim();
+        let toUserId = $('#ToUserId').val();
+        if (!message) {
+            return $(element).val('');
+        }
+
+        let fromUser = $('#FromUser').val();
+        var date = formatDate();
+
+        if (e.which === 13 || e.which === undefined) {
+            $.ajax({
+                url: '/CustomerSupport/SendMessage',
+                type: 'POST',
+                datatype: 'JSON',
+                contentType: 'application/json;charset=utf-8;',
+                data: JSON.stringify({ toUserId: toUserId, message: message }),
+                async: true,
+                success: function (res) {
+                    if (res === true) {
+                        $('.chat-discussion-small').append('<div class="right"><div class="author-name">'+ fromUser +'<small class="chat-date">'+ date +'</small></div><div class="chat-message active">'+ message +'</div></div>');
+                        $('.content').scrollTop(99999999999);
+                        $(element).val('');
+                    }
+                }
+            });
+        }
+    }
+</script>

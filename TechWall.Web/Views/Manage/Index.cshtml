@@ -1,0 +1,127 @@
+﻿@model TechWall.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Manage";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Profile</h2>
+
+    </div>
+    <div class="col-lg-3">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-md-3">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Profile Menu</h5>
+                </div>
+                <div>
+                    <div class="ibox-content no-padding border-left-right">
+                        <img alt="image" class="img-fluid" style="max-height:300px" src="@Url.Content(TechWall.Services.IdentityExtensions.GetUserPicture(User.Identity))">
+                    </div>
+
+                   
+                    <form action="~/Manage/ChangeAvatar/" enctype="multipart/form-data" method="post" style="margin:5px 0px 5px 0px">
+                        @Html.AntiForgeryToken()
+                        <input name="file" type="file""/>
+                        <input type="submit" value="Upload" class="btn btn-dark" style="margin-left:15px"/>
+
+                    </form>
+
+                    @*<a href="@Url.Action("ChangeAvatar","Manage")" class="">
+                            <p style="font-size:large;font-weight:800">Change Avatar</p><i class="fa fa-photo"></i>
+                        </a>*@
+                    <div class="ibox-content profile-content">
+                        <h4><strong>Profile Info</strong></h4>
+                        
+                        <p><i class="fa fa-user"></i> @Model.FullName</p>
+                        <p><i class="fa fa-envelope"></i> @Model.Email</p>
+                        <p><i class="fa fa-map-marker"></i> @Html.Raw(Model.Address)</p>
+                        <p><i class="fa fa-phone"></i> @Model.PhoneNumber</p>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a href="@Url.Action("ChangePassword","Manage")" class="btn btn-dark btn-lg btn-block">
+                <p style="font-size:large;font-weight:800">Change Password</p><i class="fa fa-key"></i>
+            </a>
+            <hr />
+            <a href="@Url.Action("ChangeProfile","Manage")" class="btn btn-dark btn-xl btn-block">
+                <p style="font-size:large;font-weight:800">Change Profile Info</p><i class="fa fa-user-secret"></i>
+            </a>
+            <hr />
+            <a href="@Url.Action("AddPhoneNumber","Manage")" class="btn btn-dark btn-xl btn-block">
+                <p style="font-size:large;font-weight:800">Add Phone Number</p><i class="fa fa-phone"></i>
+            </a>
+            <hr />
+            <h3>Two-Factor Authentication:</h3>
+            <dd>
+
+                @if (Model.TwoFactor)
+                {
+                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <p style="font-weight:bold">
+                            Enabled
+                            <input type="submit" value="Disable" class="btn btn-danger" />
+                        </p>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <p style="font-weight:bold">
+                            Disabled
+                            <input type="submit" value="Enable" class="btn btn-primary" />
+                        </p>
+                    }
+                }
+            </dd>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/plugins/peity")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("span.pie").peity("pie", {
+                fill: ['#1ab394', '#d7d7d7', '#ffffff']
+            })
+
+            $(".line").peity("line", {
+                fill: '#1ab394',
+                stroke: '#169c81',
+            })
+
+            $(".bar").peity("bar", {
+                fill: ["#1ab394", "#d7d7d7"]
+            })
+
+
+        });
+    </script>
+}

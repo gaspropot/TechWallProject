@@ -1,0 +1,74 @@
+﻿@model TechWall.Models.RegisterViewModel
+
+
+<div class="container">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row justify-content-md-center">          
+            <div class="col-lg-6">
+                <div class="ibox">
+                    <p class="text-xl-left"></p>
+                    <h5>Register now.... <small> A small step to join the Society!</small></h5>
+
+                    <div class="ibox-content form-group">
+                        <form class="form-signin">
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            </div>
+                            
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.LastName)
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.Address)
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.City)
+                                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.State)
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.ZipCode)
+                                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                            <div class="form-label-group">
+                                @Html.LabelFor(m => m.ConfirmPassword)
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-lg btn-dark btn-block text-uppercase mr-3" value="Register" />
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

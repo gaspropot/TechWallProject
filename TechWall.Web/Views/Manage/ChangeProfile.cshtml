@@ -1,0 +1,60 @@
+﻿@model TechWall.Entities.ApplicationUser
+@{
+    ViewBag.Title = "ChangeProfile";
+}
+    <div class="container">
+        @using (Html.BeginForm("ChangeProfile", "Manage", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6">
+                    <div class="ibox">
+
+                        <h5>Change my Profile Information <small>GDPR is Here...What's out!</small></h5>
+
+                        <div class="ibox-content">
+                            <form class="form-signin">
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                <div class="form-label-group">
+                                    @Html.LabelFor(m => m.FirstName)
+                                    @Html.TextBoxFor(m => Model.FirstName, new { @class = "form-control" })
+                                </div>
+                                <hr />
+                                <div class="form-label-group">
+                                    @Html.LabelFor(m => m.LastName)
+                                    @Html.TextBoxFor(m => Model.LastName, new { @class = "form-control" })
+                                </div>
+                                <hr />
+                                <div class="form-label-group">
+                                    @Html.LabelFor(m => m.Address)
+                                    @Html.TextBoxFor(m => Model.Address, new { @class = "form-control" })
+                                </div>
+                                <hr />
+                                <div class="form-label-group">
+                                    @Html.LabelFor(m => m.City)
+                                    @Html.TextBoxFor(m => Model.City, new { @class = "form-control" })
+                                </div>
+                                <hr />
+
+                                <div class="form-label-group">
+                                    @Html.LabelFor(m => m.ZipCode)
+                                    @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                                </div>
+                                <hr />
+
+
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-lg btn-dark btn-block text-uppercase mr-3" value="Update" />
+                                </div>
+                            </form>
+                            <a href="@Url.Action("Index","Home",new  {area="" })">
+                                <i class="fa fa-arrow-left"></i> Back to Home
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

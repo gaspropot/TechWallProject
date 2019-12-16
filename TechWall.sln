@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechWall.Entities", "TechWall.Entities\TechWall.Entities.csproj", "{DB9B095B-49DB-408E-BEA4-3CB38BEC323D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechWall.Data", "TechWall.Data\TechWall.Data.csproj", "{9DFCA5E3-0797-4286-9C6F-2FCE21181586}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechWall.Services", "TechWall.Services\TechWall.Services.csproj", "{AB76EDF6-AD2E-4782-A3DA-055C84704869}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F07B57F0-0BEC-4C5C-8370-43EBE6D0A87E}"
+	ProjectSection(SolutionItems) = preProject
+		NotesForProject.txt = NotesForProject.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechWall.Web", "TechWall.Web\TechWall.Web.csproj", "{58D8CA28-FDD5-4561-89D3-205822BAD87D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB9B095B-49DB-408E-BEA4-3CB38BEC323D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9B095B-49DB-408E-BEA4-3CB38BEC323D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9B095B-49DB-408E-BEA4-3CB38BEC323D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9B095B-49DB-408E-BEA4-3CB38BEC323D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DFCA5E3-0797-4286-9C6F-2FCE21181586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DFCA5E3-0797-4286-9C6F-2FCE21181586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DFCA5E3-0797-4286-9C6F-2FCE21181586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DFCA5E3-0797-4286-9C6F-2FCE21181586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB76EDF6-AD2E-4782-A3DA-055C84704869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB76EDF6-AD2E-4782-A3DA-055C84704869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB76EDF6-AD2E-4782-A3DA-055C84704869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB76EDF6-AD2E-4782-A3DA-055C84704869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58D8CA28-FDD5-4561-89D3-205822BAD87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D8CA28-FDD5-4561-89D3-205822BAD87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D8CA28-FDD5-4561-89D3-205822BAD87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D8CA28-FDD5-4561-89D3-205822BAD87D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {588FBCC4-1EC3-4B5F-B33E-59A8C3AFB241}
+	EndGlobalSection
+EndGlobal

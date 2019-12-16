@@ -1,0 +1,162 @@
+﻿<script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+<script src="~/signalr/hubs"></script>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Chat view</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Miscellaneous</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Chat view</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+
+                    <strong>Chat room </strong> can be used to create chat room in your app.
+                    You can also use a small chat in the right corner to provide live discussion.
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="ibox chat-view">
+
+                <div class="ibox-title">
+                    <input type="text" class="search-bar" id="emailFilter" placeholder="Search User by Email">
+
+                    <b>Customer LiveChat pannel</b>
+                </div>
+
+
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-md-9 " id="BoxDocker">
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="chat-users">
+
+                                <div class="users-list">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+
+        var hub = $.connection.chatHub;
+
+        hub.client.broadcastUsersToChat = function (listUsers) {
+
+            $('.users-list').html('');
+            var usersLength = listUsers.length
+            for (var i = 0; i < usersLength; i++) {
+                if (listUsers[i].IsOnline == true) {
+                    $('.users-list').append('<div class="chat-user" id="UserBox-' + listUsers[i].UserId + '" onclick="openChatBox(\'' + listUsers[i].UserId + '\')"><span class="float-right label label-primary">Online</span><div class="chat-user-name">' + listUsers[i].Email + '</div></div>');
+                } else {
+                    $('.users-list').append('<div class="chat-user" id="UserBox-' + listUsers[i].UserId + '" onclick="openChatBox(\'' + listUsers[i].UserId + '\')"><div class="chat-user-name">' + listUsers[i].Email + '</div></div>');
+                }
+                openChatBox(listUsers[0].UserId);
+            }
+        };
+
+        hub.connection.start().done(function () {
+            hub.server.getUsersToChat();
+        });
+
+        hub.client.broadcastRecieveMessage = function (userId, message) {
+            var date = formatDate();
+            //if ($('#DVChatBox-' + userId).length === 0) {
+            //    openChatBox(userId);
+            //} else {
+            $('.chat-discussion').append('<div class="chat-message left"><div class="message"><span class="message-date">'+ date +'</span><span class="message-content">'+ message +'</span></div></div>');
+            //}
+        }
+
+    });
+
+    function openChatBox(toUserId) {
+
+        $.ajax({
+            url: '/CustomerSupport/GetManagerChatBox',
+            type: 'POST',
+            datatype: 'JSON',
+            contentType: 'application/json;charset=utf-8;',
+            data: JSON.stringify({ toUserId: toUserId }),
+            async: true,
+            success: function (res) {
+                $('#BoxDocker').html('');
+                if ($('#DVChatBox-' + toUserId).length === 0) {
+                    $('#BoxDocker').append(res);
+                }
+                else {
+                    $('#BoxDocker').find('#DVChatBox-' + toUserId).replaceWith(res);
+                };
+                $('#DVChatBox-' + toUserId).closest('#DVChatBox-' + toUserId).find('.chat-discussion').scrollTop(99999999999);
+                $('.chat-user').css("background-color", "#f8f8f8");
+                $('#UserBox-' + toUserId).css("background-color", "gray");
+            }
+        });
+    }
+
+    $("#emailFilter").on("keyup click input", function () {
+        var val = $(this).val();
+        if (val.length) {
+            $(".users-list .chat-user").hide().filter(function () {
+                return $('.chat-user-name', this).text().toLowerCase().indexOf(val.toLowerCase()) != -1;
+            }).show();
+        }
+        else {
+            $(".users-list .chat-user").show();
+        }
+    });
+
+    function formatDate() {
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        var finalDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+
+        return finalDate;
+    }
+
+</script>
+

@@ -1,0 +1,129 @@
+﻿@model TechWall.ViewModels.ProductIndexData
+
+<style>
+    .offer-tag {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: darkred;
+        padding: 6px 12px;
+        position: absolute;
+        top: -32px;
+        left: 0;
+    }
+</style>
+
+
+@{
+    double paging;
+    if (Math.Floor(Convert.ToDouble(Model.Products.Count()) / 12) == 0)
+    {
+        paging = 0;
+
+    }
+    else
+    {
+        paging = Math.Ceiling(Convert.ToDouble(Model.Products.Count()) / 12);
+
+    }
+
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @for (int i = 0; i < Model.Products.ToList().Count; i++)
+        {
+            <div class="col-md-3">
+                <div class="ibox">
+                    <div class="ibox-content product-box">
+                        <div class="">
+                            @foreach (var item in @Model.Products.ToList()[i].Pictures.Select(p => p).Take(1))
+                            {
+                                <img class="img-fluid" id="@item.ID" src="@Url.Content(item.URL)">
+                            }
+
+
+                        </div>
+                        <div class="product-desc">
+
+                            @if (@Model.Products.ToList()[i].isFeatured == true)
+                            {
+                                <span class="offer-tag">
+                                    Special offer
+                                </span>
+                            }
+                            <span class="product-price">
+                                @Model.Products.ToList()[i].Price
+                            </span>
+                            <small class="text-muted"> @Model.Products.ToList()[i].Category.Name</small>
+                            <a href="@Url.Action("ProductDetails", "Home", new { id = Model.Products.ToList()[i].ID })" class="product-name">  @Model.Products.ToList()[i].Name</a>
+                            @*<div class="small m-t-xs">
+                                    @Model.Products.ToList()[i].Description
+                                </div>*@
+                            @using (Html.BeginForm("Add", "Home", FormMethod.Post))
+                            {
+                                <div class="m-t text-righ">
+
+
+                                    <a href="@Url.Action("ProductDetails", "Home", new { id = Model.Products.ToList()[i].ID })" class="btn btn-xs btn-outline btn-primary">
+                                        Info <i class="fa fa-long-arrow-right"></i>
+                                    </a>
+
+                                    @Html.Hidden("ProductId", @Model.Products.ToList()[i].ID)
+                                    @*<a href="#" class="btn btn-sm btn-primary float-right m-t-n-xs">Add to basket <i class="fa fa-shopping-basket"></i> </a>*@
+                                    <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit">
+                                        Add to cart <i class="fa fa-shopping-basket"></i>
+                                    </button>
+
+
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+
+
+
+    <nav aria-label="Page navigation example">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <form>
+                <ul class="pagination">
+
+
+                    @if (paging != 0)
+                    {
+                        for (int i = 0; i <= paging; i++)
+                        {
+
+                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Home", new { page = i + paging, currentFilter = ViewBag.CurrentFilter, MinPrice = ViewBag.PriceRangeMinPrice, MaxPrice = ViewBag.PriceRangeMaxPrice, categoryFilter = ViewBag.CategoryFilterParm })">@(i + paging)</a></li>
+
+
+                        }
+                    }
+                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Home", new { page = paging+1, currentFilter = ViewBag.CurrentFilter, MinPrice = ViewBag.PriceRangeMinPrice, MaxPrice = ViewBag.PriceRangeMaxPrice, categoryFilter = ViewBag.CategoryFilterParm })">Go to start</a></li>
+
+                </ul>
+            </form>
+        }
+    </nav>
+
+
+
+
+
+</div>
+
+
+
+
+

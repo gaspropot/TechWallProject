@@ -1,0 +1,180 @@
+﻿@model TechWall.Entities.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Users</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "ApplicationUser")">Users</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Edit</strong>
+            </li>
+        </ol>
+    </div>
+
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+
+                    <div class="form-horizontal">
+                        <div class=" form-group row">
+                            <label class="control-label col-md-2">Full Name</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Model.FullName&nbsp;</p>
+                            </div>
+                        </div>
+                        <div class=" form-group row">
+                            <label class="control-label col-md-2">User Name</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Model.UserName</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Email</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Model.Email</p>
+                            </div>
+                        </div>
+                        <div class=" form-group row">
+                            <label class="control-label col-md-2">Address</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Html.Raw(Model.AddressBlock)&nbsp;</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Phone Number</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Model.PhoneNumber&nbsp;</p>
+                            </div>
+                        </div>
+
+                        <div class="checkbox disabled col-md-offset-2">
+                            <label class="control-label">
+                                <input type="checkbox" checked="@Model.TwoFactorEnabled" disabled>
+                                Two-Factor Enabled
+                            </label>
+                        </div>
+
+
+
+                        <div class="checkbox disabled col-md-offset-2">
+                            <label class="control-label">
+                                <input type="checkbox" checked="@Model.EmailConfirmed" disabled>
+                                Email Confirmed
+                            </label>
+                        </div>
+
+
+
+                        <div class="checkbox disabled col-md-offset-2">
+                            <label class="control-label">
+                                <input type="checkbox" checked="@Model.PhoneNumberConfirmed" disabled>
+                                Phone Number Confirmed
+                            </label>
+                        </div>
+
+                        <div class="form-group row">
+                            @* STATUS *@
+                            <label class="control-label col-md-2">Status</label>
+
+                            @*Cannot Lockout*@
+                            @if (!Model.LockoutEnabled)
+                            {
+                                <div class="col-md-10">
+                                    <p class="form-control-static text-info">This user cannot be locked out of his or her account.</p>
+                                </div>
+                            }
+                        </div>
+
+                        @*Unlocked*@
+                        @if (Model.LockoutEnabled && (Model.LockoutEndDateUtc <= DateTime.Now || Model.LockoutEndDateUtc == null))
+                        {<div></div>
+                            <div class="col-md-10">
+                                <p class="form-control-static">Unlocked</p>
+                            </div>
+
+                            <div class="col-md-offset-2">
+                                @using (Html.BeginForm("LockAccount", "ApplicationUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Id)
+                                    <input type="submit" value="Lock Account" class="btn btn-danger" />
+                                }
+                            </div>
+                            <br />
+                            <label class="control-label col-md-2">Access Failed Count</label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">@Model.AccessFailedCount</p>
+                            </div>
+                        }
+
+
+                        @*Locked*@
+                        @if (Model.LockoutEnabled && (Model.LockoutEndDateUtc > DateTime.Now))
+                        {
+                            <div class="col-md-10">
+                                <p class="form-control-static">Locked-out until @Model.LockoutEndDateUtc (UTC)</p>
+                            </div>
+
+                            <div class="col-md-offset-2">
+                                @using (Html.BeginForm("UnlockAccount", "ApplicationUser", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Id)
+                                    <input type="submit" value="Unlock Account" class="btn btn-success" />
+                                }
+                            </div>
+                        }
+                        <br />
+                        @*Roles*@
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Id)
+
+                            <div class="form-group row">
+
+                                @Html.Label("Roles", new { @class = "control-label col-sm-2" })
+                                <br />
+                                <span class="col-sm-10">
+                                    @foreach (var item in Model.RolesList)
+                                    {
+                                        <input type="checkbox" name="RolesSelectedOnView" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                        @Html.Label(item.Value, new { @class = "control-label col-sm-2" }) <br />
+                                    }
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

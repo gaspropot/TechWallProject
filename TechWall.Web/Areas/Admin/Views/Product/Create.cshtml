@@ -1,0 +1,273 @@
+﻿@model TechWall.Entities.Product
+
+@{
+    ViewBag.Title = "Create Product";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Product edit</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Product")">Products</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Create</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <div class="form-horizontal">
+                        <h4>Product</h4>
+                        <hr />
+                        @using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+
+
+
+                            @Html.AntiForgeryToken()
+
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div class="form-group row">
+
+
+                                @Html.LabelFor(model => model.Name, "Name", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+
+                                <div class="col-sm-10">
+
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+
+                                @Html.LabelFor(model => model.BrandID, "Brand", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+
+                                <div class="col-sm-10">
+
+                                    @Html.DropDownList("BrandID", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+
+
+                                @Html.LabelFor(model => model.CategoryID, "Category", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+
+                                <div class="col-sm-10">
+
+                                    @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group row">
+
+
+                                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+
+                                <div class="col-sm-10">
+
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.isFeatured, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                                <div class="col-sm-10">
+
+                                    @Html.CheckBoxFor(model => model.isFeatured, new { htmlAttributes = new { @class = "checkbox checkbox-info" } })
+                                    @Html.ValidationMessageFor(model => model.isFeatured, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+
+                                <div class="col-sm-10">
+
+                                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Pictures, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="file" id="file" name="file" class="form-control" />
+                                </div>
+                            </div>
+
+                            @*<div>
+                    <div id="previews" class="dz-default dz-message box__input dropzone">
+                        <div style="text-align:center">
+                            <i class="fa fa-cloud-upload" style="font-size:23px;position:relative;top:4px;"></i> <span style="margin-left:20px">Drop files  to attach or browse</span>
+                        </div>
+                    </div>
+                    <div id="previewFiles" class="image-imitation"></div>
+                </div>*@
+                            <hr />
+                            <div class="form-row">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+                @section Styles {
+                    @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")
+                    @Styles.Render("~/plugins/summernoteStyles")
+
+                }
+
+                @section Scripts {
+                    @Scripts.Render("~/bundles/jqueryval")
+                    @Scripts.Render("~/plugins/dropZone")
+                    @Scripts.Render("~/plugins/summernote")
+
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+
+                            $('#Description').summernote({
+                                toolbar: [
+                                    // [groupName, [list of button]]
+                                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                                    ['fontsize', ['fontsize']],
+                                    ['color', ['color']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['height', ['height']]
+                                ]
+                            })
+
+                            $('.custom-file-input').on('change', function () {
+                                let fileName = $(this).val().split('\\').pop();
+                                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+                            });
+
+                                Dropzone.autoDiscover = false;
+                            $('#myDropzone').dropzone({
+                               //parameter name value
+                                paramName: "files",
+                                //clickable div id
+                                clickable: '#previews',
+                               //preview files container Id
+                                previewsContainer: "#previewFiles",
+                                autoProcessQueue: false,
+                                uploadMultiple: true,
+                                parallelUploads: 100,
+                                maxFiles: 100,
+                              //  url:"/", // url here to save file
+                                maxFilesize: 100,//max file size in MB,
+                                addRemoveLinks: true,
+                                dictResponseError: 'Server not Configured',
+                                acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf",// use this to restrict file type
+                                init: function () {
+                                    var self = this;
+                                    // config
+                                    self.options.addRemoveLinks = true;
+                                    self.options.dictRemoveFile = "Delete";
+                                    //New file added
+                                    self.on("addedfile", function (file) {
+                                        console.log('new file added ', file);
+                                        $('.dz-success-mark').hide();
+                                        $('.dz-error-mark').hide();
+                                    });
+                                    // Send file starts
+                                    self.on("sending", function (file) {
+                                        console.log('upload started', file);
+                                        $('.meter').show();
+                                    });
+
+                                    // File upload Progress
+                                    self.on("totaluploadprogress", function (progress) {
+                                        console.log("progress ", progress);
+                                        $('.roller').width(progress + '%');
+                                    });
+
+                                    self.on("queuecomplete", function (progress) {
+                                        $('.meter').delay(999).slideUp(999);
+                                    });
+
+                                    // On removing file
+                                    self.on("removedfile", function (file) {
+                                        console.log(file);
+                                    });
+
+                                    $('#dropSubmit').on("click", function (e) {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                          // Validate form here if needed
+
+                                            if (self.getQueuedFiles().length > 0) {
+                                                self.processQueue();
+
+
+                                            } else {
+                                                self.uploadFiles([]);
+                                                $('#myDropzone').submit();
+                                            }
+
+                                    });
+
+
+
+                                    self.on("successmultiple", function (files, response) {
+
+                                        alert(response.Message);
+                                        window.location = "./Index";
+                                    });
+                                }
+                            });
+
+
+
+
+
+
+
+                        });
+
+                    </script>
+                }
+
+

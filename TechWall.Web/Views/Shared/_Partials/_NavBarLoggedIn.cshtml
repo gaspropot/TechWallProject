@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNet.Identity
+
+<link href="https://fonts.googleapis.com/css?family=Calistoga&display=swap" rel="stylesheet">
+<div class="row border-bottom" style="position:sticky;top:0;z-index:2000">
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="@Url.Action("Index","Home")"><p style="font-size:xx-large;padding:4px 0px 0px 40px;color:#1AB394;font-family: 'Calistoga', cursive;">TechWall</p></a>
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li style="padding: 20px">
+                <span class="m-r-sm text-muted welcome-message">Welcome to TechWall</span>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <img class="rounded-circle" src="@Url.Content(TechWall.Services.IdentityExtensions.GetUserPicture(User.Identity))" style="height:50px" /> Menu
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="@Url.Action("Index","Manage")">
+                            <i class="fa fa-user"></i> My Account
+                        </a>
+                    </li>
+                    @if (User.Identity.Name == "admin@admin.com" || User.Identity.Name == "manager@manager.com")
+                    {
+                        <li class="dropdown-divider"></li>
+                        <li>
+
+                            <a href="@Url.Action("Index","Admin")">
+                                <i class="fa fa-envelope"></i> Admin Panel
+                            </a>
+
+                        </li>
+                    }
+                    <li class="dropdown-divider"></li>
+                    <li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+
+                                @Html.AntiForgeryToken()
+                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="fa fa-sign-out" style="color:black"></i> <span style="color:black">Log out</span>
+                                </a>
+
+
+                            }
+                        }
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+
+
+            <li>
+                <a href="@Url.Action("Cart","Home")" style="margin-right:20px;">
+                    <i class="fa fa-shopping-cart"></i> My Cart
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

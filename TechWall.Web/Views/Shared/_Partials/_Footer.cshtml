@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNet.Identity
+<hr class="hr-line-solid" />
+<section id="footer" style="background-color:#1AB394">
+    <div class="container">
+        <div class="row text-center text-xs-center text-sm-left text-md-left">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <h5>Quick links</h5>
+                <ul class="list-unstyled quick-links">
+                    <li><a href="@Url.Action("Index","Home")"><i class="fa fa-angle-double-right"></i>Home</a></li>
+                    <li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About</a></li>
+                    <li><a href="https://en.wikipedia.org/wiki/FAQ"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
+
+                </ul>
+            </div>
+            @if (Request.IsAuthenticated)
+            {
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h5>Quick Actions</h5>
+                    <ul class="list-unstyled quick-links">
+
+                        <li><a href="@Url.Action("MyAccount", "Home")"><i class="fa fa-angle-double-right"></i>Go to my account</a></li>
+                        <li><a href="@Url.Action("Cart", "Home")"><i class="fa fa-angle-double-right"></i>Go to my cart</a></li>
+
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-angle-double-right"></i>Log out</a></li>
+                        }
+
+                    </ul>
+                </div>
+            }
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <h5>Contact Adress</h5>
+                <ul style="list-style-type:none;">
+                    <li style="color: white;">Panepistimiou 134</li>
+                    <li style="color: white;">Athens, Greece</li>
+                    <li style="color: white;">14232</li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+                <ul class="list-unstyled list-inline social text-center">
+                    <li class="list-inline-item"><a href="https://el.wikipedia.org/wiki/Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                    <li class="list-inline-item"><a href="https://en.wikipedia.org/wiki/Instagram" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="https://en.wikipedia.org/wiki/Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="https://en.wikipedia.org/wiki/LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+
+                </ul>
+            </div>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+                <p><u><a href="#">TechWall Industries</a></u> is a Registered Commecrial and Trading Company</p>
+            </div>
+            <hr />
+        </div>
+    </div>
+</section>

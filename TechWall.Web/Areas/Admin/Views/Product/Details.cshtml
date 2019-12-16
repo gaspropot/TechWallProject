@@ -1,0 +1,210 @@
+﻿@model TechWall.Entities.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+@{
+    ViewBag.Title = "ProductDetail";
+}
+    @*<style>
+        .product-images img {
+  height: calc(50vh - 100px);
+  width: auto;
+  margin: 0 auto; /* it centers any block level element */
+}
+    </style>*@
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>E-commerce product detail</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Dashboard")">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <<a href="@Url.Action("Index","Product")">Products</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Product detail</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+            <div class="ibox product-detail">
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+
+
+                            <div class="product-images">
+
+
+                                @foreach (var item in Model.Pictures)
+                               
+                                {<div class="image-fluid">
+                                        <img src="@Url.Content(item.URL)" alt="Alternate Text" />
+                                    </div>      }
+                               
+                                @*<div class="image-imitation">
+                                        [IMAGE 1]
+                                    </div>
+                                 
+                                <div class="image-imitation">
+                                        [IMAGE 1]
+                                    </div>*@
+
+
+
+
+                            </div>
+
+                        </div>
+                        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7">
+
+                            <h2 class="font-bold m-b-xs">
+                               @Model.Name
+                            </h2>
+                            
+                            <div class="m-t-md">
+                                <h2 class="product-main-price">@Model.Price<span>&euro;</span> 
+                            </div>
+                            <hr>
+
+                            <h3 class="font-bold m-x-xs" >Product description</h3>
+
+                           @Html.Raw(Model.Description)
+                            <hr>
+
+
+                        </div>
+                    </div>
+
+                </div>
+              
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+    @Styles.Render("~/plugins/slickStyles")
+    @Styles.Render("~/plugins/slickThemeStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/slick")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('.product-images').slick({
+                dots: true,
+                speed:150,
+                centerMode: true,
+                infinite:false
+            });
+
+        });
+    </script>
+}
+
+
+@*<h2>Details</h2>
+
+    <div>
+        <h4>Product</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Brand.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Brand.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Summary)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Summary)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.isFeatured)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.isFeatured)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ThumbnailPictureID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ThumbnailPictureID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedOn)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

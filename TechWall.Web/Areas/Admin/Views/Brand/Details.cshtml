@@ -1,0 +1,61 @@
+﻿@model TechWall.Entities.Brand
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Brands</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Dashboard")">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Brand")">Brands</a>
+            </li>
+            <li class="active breadcrumb-item">
+                <strong>Details</strong>
+            </li>
+        </ol>
+    </div>
+
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ModifiedOn)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.ModifiedOn)
+                        </dd>
+
+                    </dl>
+                </div>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+                    @Html.ActionLink("Back to List", "Index")
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

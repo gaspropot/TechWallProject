@@ -1,0 +1,154 @@
+﻿@model TechWall.Entities.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerZipCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerZipCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAmmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalAmmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeliveryCharges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeliveryCharges)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FinalAmmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinalAmmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlacedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlacedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

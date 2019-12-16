@@ -1,0 +1,106 @@
+﻿@model TechWall.ViewModels.ChatBoxModel
+@using Microsoft.AspNet.Identity
+
+<div class="ManagerChatBox" id="DVChatBox-@Model.ToUser.UserId">
+    @Html.HiddenFor(m => m.ToUser.UserId, new { @id = "ToUserId" })
+    @Html.HiddenFor(m => User.Identity.Name, new { @id = "FromUser" })
+    
+    <div class="chat-discussion">
+        
+        @foreach (var message in Model.Messages)
+        {
+            <div class="chat-message @message.Class">
+                <div class="message">
+                    <a class="message-author" href="#">
+                        @if (message.Class == "left")
+                        {
+                            @Model.ToUser.Email
+                        }
+                        else
+                        {
+                            @User.Identity.Name
+                        }
+                    </a>
+                    <span class="message-date"> @message.Date </span>
+                    <span class="message-content">
+                        @message.Message
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="chat-message-form">
+
+            <div class="form-group">
+
+                <textarea class="form-control message-input" id="write_msg" onkeyup="sendMessage(this, event);" maxlength="250" placeholder="Enter message text"></textarea>
+                <button class="msg_send_btn" id="msg_send_btn" type="button"><i class="fa fa-arrow-circle-right"></i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function formatDate() {
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        var finalDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+
+        return finalDate;
+    }
+
+    function sendMessage(element, e) {
+        let message = $(element).val().trim();
+        let toUserId = $('#ToUserId').val();
+        if (!message) {
+            return $(element).val('');
+        }
+
+        let fromUser = $('#FromUser').val();
+        var date = formatDate();
+
+        if (e.which === 13 || e.which === undefined) {
+            $.ajax({
+                url: '/CustomerSupport/SendMessage',
+                type: 'POST',
+                datatype: 'JSON',
+                contentType: 'application/json;charset=utf-8;',
+                data: JSON.stringify({ toUserId: toUserId, message: message }),
+                async: true,
+                success: function (res) {
+                    
+                    if (res === true) {
+                        $('.chat-discussion').append('<div class="chat-message right"><div class="message"><a class="message-author" href="#">'+ fromUser +'</a><span class="message-date">' + date + '</span><span class="message-content">' + message + '</span></div></div>');
+                        $('.chat-discussion').scrollTop(99999999999);
+                        $(element).val('');
+
+                    }
+                }
+            });
+        }
+    }
+
+    $('#msg_send_btn').click(function (e) {
+
+        $('#write_msg').keyup();
+    });
+
+</script>

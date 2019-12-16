@@ -1,0 +1,228 @@
+﻿@model PayPal.Api.PaymentHistory
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+@{
+    ViewBag.Title = "Sales";
+}
+
+<div class="heads" style="background: url(/public/img/brewery-back1.jpg) 50% 27%;">
+    <div class="container">
+        <div class="row">
+
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row confirm">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Created Date</th>
+                            <th>Payment Status</th>
+                            <th>Payer</th>
+                            <th>Customer</th>
+                            <th class="text-right">Total</th>
+                            <th class="text-right">Sale Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var payment in Model.payments)
+                        {
+                            <tr>
+                                <td>@payment.id</td>
+                                <td>@payment.create_time</td>
+                                <td>@payment.state</td>
+                                <td>@payment.payer.payer_info.email</td>
+                                <td>@GetCustomerName(payment.id)</td>
+                                <td class="text-right">€@(decimal.Parse(payment.transactions.First().amount.total).ToString("0.00"))</td>
+                                <td class="text-right">@(payment.transactions.First().related_resources.First(x => x.sale != null).sale.state)</td>
+                                <td class="text-right">
+                                    @if (payment.transactions.First().related_resources.First(x => x.sale != null).sale.state == "refunded")
+                                    {
+                                        <button type="button" class="btn btn-warning" disabled>Refunded</button>
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("Refund", "Order", FormMethod.Post, new { id = "refundform"}))
+                                        {
+                                            @Html.Hidden("saleId", payment.transactions.First().related_resources.First(x => x.sale != null).sale.id)
+                                            <a class="btn btn-warning" onclick="refundTest(@(decimal.Parse(payment.transactions.First().amount.total).ToString("0.00")))">Refund</a>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function refundTest(num) {
+        var amount = (num).toFixed(2)
+        if (confirm('Are you sure you want to refund amount of €'+ amount +'')) {
+           $('#refundform').submit();
+       } else {
+           return true;
+       }
+    }
+
+</script>
+
+@functions {
+    TechWall.Data.TechWallDbContext _Context = new TechWall.Data.TechWallDbContext();
+
+    public string GetCustomerName(string paymentId)
+    {
+        try
+        {
+            var userEmail =  _Context.Orders.FirstOrDefault(x => x.PayPalReference.Equals(paymentId)).User.Email;
+
+            return userEmail;
+             
+        }
+        catch
+        {
+            return "Not found";
+        }
+    }
+
+}
+
+
+@*
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalAmmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryCharges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalAmmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlacedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerCountry)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerZipCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAmmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryCharges)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalAmmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlacedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedOn)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            </td>
+        </tr>
+    }
+
+    </table>*@

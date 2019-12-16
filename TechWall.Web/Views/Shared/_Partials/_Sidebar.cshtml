@@ -1,0 +1,203 @@
+﻿@model TechWall.ViewModels.ProductIndexData
+@using Microsoft.AspNet.Identity
+<div class="col-lg-12">
+
+    @{
+        List<SelectListItem> listItems = new List<SelectListItem>();
+
+        //var list = Model.Categories.Where(s => s.ParentCategoryID != null);
+
+        foreach (var item in Model.Categories)
+        {
+
+            listItems.Add(new SelectListItem { Text = item.Name });
+        }
+
+        }
+
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <form class="m-t" role="form" action="#">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <p class="font-bold" style="margin:10px 0px 1px 0px;">Price Range</p>
+                    @Html.TextBox("MinPrice", ViewBag.PriceRangeMinPrice as string, new { @class = "form-control", @placeholder = "Min" })<span class="input-group-append">
+                    </span>
+                    @Html.TextBox("MaxPrice", ViewBag.PriceRangeMaxPrice as string, new { @class = "form-control", @placeholder = "Max" })<span class="input-group-append">
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <p class="font-bold" style="margin-bottom:1px;"><label>Order By Price</label></p>
+                    <div>
+                        @Html.ActionLink("Hight to Low", "Index", new { sortOrder = ViewBag.PriceHighToLowSortParm, currentFilter = ViewBag.CurrentFilter, MinPrice = ViewBag.PriceRangeMinPrice, MaxPrice = ViewBag.PriceRangeMaxPrice, categoryFilter = ViewBag.CategoryFilterParm }, new { @class = "btn btn-primary btn-sm btn-block" })
+                        @Html.ActionLink("Low to High", "Index", new { sortOrder = ViewBag.PriceLowToHighSortParm, currentFilter = ViewBag.CurrentFilter, MinPrice = ViewBag.PriceRangeMinPrice, MaxPrice = ViewBag.PriceRangeMaxPrice, categoryFilter = ViewBag.CategoryFilterParm }, new { @class = "btn btn-danger btn-sm btn-block" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <p class="font-bold" style="margin-bottom:1px;"><label>Product Type</label></p>
+                    <div>
+                        @Html.DropDownList("categoryFilter", listItems, "Select Category", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <p class="font-bold" style="margin-bottom:1px;"><label>Search</label></p>
+                    <div>
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search...." })<span class="input-group-append">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <input class="btn btn-sm btn-primary m-t-n-xs" type="submit" value="Search" />
+                </div>
+            </div>
+        </form>
+    }
+
+    @if (Request.IsAuthenticated)
+    {
+        <div id="small-chat" style="position:static;margin:0px 5px">
+
+            <a class="open-small-chat">
+                <i class="fa fa-comments"></i>
+
+            </a>
+        </div>
+
+        <div class="small-chat-box fadeInLeft animated">
+
+            <div class="heading" draggable="true">
+                <small class="chat-date float-left">
+                </small>
+                Live Support
+            </div>
+
+            <div class="content">
+                <div class="chat-prelude">
+                    <p>Press the button to connect with one of our Support Agents.</p>
+                    <button class="btn btn-info" id="startChat">Start Chat</button>
+
+                    <p class="chat-prelude-end">*Due to high traffic, response times may differ. Thank you for understanding.</p>
+                </div>
+            </div>
+
+            <div class="form-chat" id="small-chat-btn-send-btn">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="write_msg_small" maxlength="250" onkeyup="sendMessage(this, event)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="btn_send">
+                            Send
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+
+
+    <script>
+            var hub = $.connection.chatHub;
+
+            hub.connection.start().done(function () {
+                hub.server.getUsersToChat();
+            });
+
+            hub.client.broadcastRecieveMessage = function (userId, message) {
+                var date = formatDate();
+                //if ($('#DVChatBox-' + userId).length === 0) {
+                //    openChatBox(userId);
+                //} else {
+                //    $('#DVChatBox-' + userId).find('.messages-list').append('<div class="dvmsg dvmsg-to"><span class="msg">' + message + '</span></div>');
+                //}
+                $('.chat-discussion-small').append('<div class="left"><div class="author-name">Support Agent<small class="chat-date">'+ date +'</small></div><div class="chat-message active">'+ message +'<div></div>');
+            }
+
+
+            $("#startChat").click(function (e) {
+                e.preventDefault();
+                var toUserId = '@GetManagerId()';
+
+                $.ajax({
+                    url: '/CustomerSupport/GetChatBox',
+                    type: 'POST',
+                    datatype: 'JSON',
+                    contentType: 'application/json;charset=utf-8;',
+                    data: JSON.stringify({ toUserId: toUserId }),
+                    async: true,
+                    success: function (res) {
+
+                        $(".chat-prelude").hide();
+                        $('#small-chat-btn-send-btn').show();
+
+                        if ($('#DVChatBox-' + toUserId).length === 0) {
+                            $('.content').append(res);
+                        }
+                        else {
+                            $('.content').find('#DVChatBox-' + toUserId).replaceWith(res);
+                        }
+                        $('.content').scrollTop(99999999999);
+                    }
+                });
+            });
+
+            function formatDate() {
+                var date = new Date();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+
+                var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+                var finalDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+
+                return finalDate;
+            }
+
+            $('#btn_send').click(function (e) {
+                e.preventDefault();
+                $('#write_msg_small').keyup();
+            });
+
+            $('#small-chat-btn-send-btn').hide();
+
+    </script>
+
+    @functions {
+        TechWall.Data.TechWallDbContext _Context = new TechWall.Data.TechWallDbContext();
+
+        public string GetManagerId()
+        {
+            var roleId = _Context.Roles.FirstOrDefault(i => i.Name == "eshopmanager").Id;
+
+            var userId = _Context.Users.FirstOrDefault(x => x.Roles.FirstOrDefault().RoleId == roleId).Id;
+
+            return userId;
+        }
+    }
+
+
+</div>
+
+
+
+
+
+
